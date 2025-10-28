@@ -1,0 +1,12 @@
+<odoo>
+  <record id="action_report_session" model="ir.actions.report">
+      <field name="name">Fiche de Session</field>
+      <field name="model">academy.session</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">OCR.report_session_document</field>
+      <field name="report_file">OCR.report_session_document</field>
+      <field name="print_report_name">'Fiche_Session_%s' % (object.name)</field>
+      <field name="binding_model_id" ref="model_academy_session"/>
+      <field name="binding_type">report</field>
+  </record>
+</odoo>

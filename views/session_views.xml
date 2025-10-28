@@ -1,0 +1,88 @@
+<odoo>
+  <!-- Vue formulaire -->
+  <record id="view_session_form" model="ir.ui.view">
+    <field name="name">academy.session.form</field>
+    <field name="model">academy.session</field>
+    <field name="arch" type="xml">
+      <form string="Session de formation">
+
+        <!-- 🟢 Header du workflow -->
+        <header>
+          <button name="action_export_csv" string="Exporter CSV" type="object" class="btn-secondary"/>
+
+          <button name="action_export_xls" string="Exporter XLS" type="object" class="btn-primary"/>
+          
+          <button name="action_open" string="Lancer la session"
+                  type="object" class="btn-primary"
+                  invisible="state != 'draft'"/>
+
+          <button name="action_done" string="Clôturer"
+                  type="object" class="btn-success"
+                  invisible="state != 'open'"/>
+
+          <button name="action_open_cancel_wizard" string="Annuler"
+                  type="object" class="btn-danger"
+                  invisible="state != 'open'"/>
+
+          <field name="state" widget="statusbar"
+                statusbar_visible="draft,open,done,cancel"/>
+        </header>
+
+
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="date_debut"/>
+            <field name="date_fin"/>
+            <field name="duration"/>
+            <field name="trainer_id"/>
+            <field name="attendee_ids" widget="many2many_tags"/>
+          </group>
+          <notebook>
+            <page string="Détails">
+              <field name="cancel_reason" readonly="1" invisible="state != 'cancel'"/>
+            </page>
+          </notebook>
+        </sheet>
+        <chatter>
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids"/>
+        </chatter>
+
+      </form>
+    </field>
+  </record>
+
+  <!-- Vue liste -->
+  <record id="view_session_list" model="ir.ui.view">
+    <field name="name">academy.session.list</field>
+    <field name="model">academy.session</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="date_debut"/>
+        <field name="date_fin"/>
+        <field name="duration"/>
+        <field name="trainer_id"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Action fenêtre -->
+  <record id="action_sessions" model="ir.actions.act_window">
+    <field name="name">Sessions</field>
+    <field name="res_model">academy.session</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <!-- Menu principal -->
+  <menuitem id="menu_academy_root" name="Academy"/>
+
+  <!-- Menu sessions -->
+  <menuitem id="menu_academy_sessions"
+            name="Sessions"
+            parent="menu_academy_root"
+            action="action_sessions"/>
+</odoo>
